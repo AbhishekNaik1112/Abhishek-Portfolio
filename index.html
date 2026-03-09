@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishek G Naik — Full-Stack Developer</title>
+    <meta name="description" content="Full-Stack Developer building scalable web apps with React, Node.js, TypeScript.">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ---- Theme Variables ---- */
+        :root {
+            --bg: #fafafa;
+            --surface: #f0f0f2;
+            --border: rgba(0,0,0,0.08);
+            --fg: #1a1a1a;
+            --muted: #6b7280;
+            --accent: #16a34a;
+            --particle: rgba(0,0,0,0.35);
+            --particle-green: rgba(22,163,74,0.8);
+            --connection: rgba(0,0,0,0.2);
+            --connection-green: rgba(22,163,74,0.35);
+            --mouse-line: rgba(22,163,74,0.4);
+            --cursor-glow: rgba(22,163,74,0.06);
+            --card-hover-bg: #e8e8ec;
+            --tag-bg: rgba(0,0,0,0.04);
+            --tag-border: rgba(0,0,0,0.08);
+            --selection-bg: rgba(22,163,74,0.15);
+            --selection-fg: #1a1a1a;
+            --scrollbar-track: #fafafa;
+            --scrollbar-thumb: #d4d4d8;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0b0b0f;
+            --surface: #111116;
+            --border: rgba(255,255,255,0.06);
+            --fg: #e4e4e7;
+            --muted: #71717a;
+            --accent: #22c55e;
+            --particle: rgba(255,255,255,0.15);
+            --particle-green: rgba(34,197,94,0.6);
+            --connection: rgba(255,255,255,0.08);
+            --connection-green: rgba(34,197,94,0.16);
+            --mouse-line: rgba(34,197,94,0.2);
+            --cursor-glow: rgba(34,197,94,0.06);
+            --card-hover-bg: #16161b;
+            --tag-bg: rgba(255,255,255,0.04);
+            --tag-border: rgba(255,255,255,0.06);
+            --selection-bg: rgba(34,197,94,0.2);
+            --selection-fg: #fff;
+            --scrollbar-track: #0b0b0f;
+            --scrollbar-thumb: #27272a;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        ::selection { background: var(--selection-bg); color: var(--selection-fg); }
+
+        /* Hide scrollbar */
+        ::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ---- Pulse dot ---- */
+        .pulse-dot {
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: relative;
+        }
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--accent);
+            animation: pulse-ring 2s ease-out infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        /* ---- Nav ---- */
+        .nav-blur {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: color-mix(in srgb, var(--bg) 80%, transparent);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+
+        /* ---- Typing cursor ---- */
+        .type-cursor::after {
+            content: '|';
+            color: var(--accent);
+            animation: blink 1s step-end infinite;
+            margin-left: 1px;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* ---- Cards ---- */
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+        .project-card:hover {
+            border-color: color-mix(in srgb, var(--fg) 12%, transparent);
+            background: var(--card-hover-bg);
+        }
+
+        /* ---- Tech tag ---- */
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            background: var(--tag-bg);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--tag-border);
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            cursor: default;
+        }
+        .tag:hover {
+            background: color-mix(in srgb, var(--accent) 10%, transparent);
+            color: var(--accent);
+            border-color: color-mix(in srgb, var(--accent) 20%, transparent);
+        }
+
+        /* ---- Link arrow ---- */
+        .arrow-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: gap 0.2s ease;
+        }
+        .arrow-link:hover { gap: 0.6rem; }
+
+        /* ---- Divider ---- */
+        .divider {
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ---- Experience timeline ---- */
+        .timeline-border {
+            border-left: 1px solid var(--border);
+        }
+
+        /* ---- Footer border ---- */
+        .footer-border {
+            border-top: 1px solid var(--border);
+        }
+
+        /* ---- Particle Canvas ---- */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ---- Cursor follower ---- */
+        .cursor-glow {
+            width: 300px; height: 300px;
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cursor-glow) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
+
+        /* ---- Animated custom cursor ---- */
+        .custom-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+        .cursor-dot {
+            width: 6px; height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+        }
+        .cursor-dot.hovering {
+            width: 10px; height: 10px;
+            background: var(--accent);
+        }
+        .cursor-ring {
+            width: 36px; height: 36px;
+            border: 1.5px solid var(--fg);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+            opacity: 0.4;
+        }
+        .cursor-ring.hovering {
+            width: 50px; height: 50px;
+            border-color: var(--accent);
+            opacity: 0.6;
+        }
+        @media (pointer: coarse), (max-width: 768px) {
+            .cursor-dot, .cursor-ring { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .cursor-dot, .cursor-ring { display: none; }
+        }
+
+        /* ---- Mobile menu ---- */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+        }
+        .mobile-menu.active { transform: translateX(0); }
+
+        /* ---- Section transitions ---- */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- Theme toggle ---- */
+        .theme-toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            border-radius: 11px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.3s ease;
+            flex-shrink: 0;
+        }
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--fg);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        [data-theme="dark"] .theme-toggle::after {
+            transform: translateX(18px);
+        }
+        .theme-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            color: var(--muted);
+            transition: opacity 0.2s ease;
+        }
+        .theme-icon-sun { left: 4px; }
+        .theme-icon-moon { right: 4px; }
+        [data-theme="dark"] .theme-icon-sun { opacity: 0.4; }
+        [data-theme="dark"] .theme-icon-moon { opacity: 1; }
+        :root .theme-icon-sun { opacity: 1; }
+        :root .theme-icon-moon { opacity: 0.4; }
+
+        /* ---- Text color utility classes ---- */
+        .text-theme-fg { color: var(--fg); transition: color 0.3s ease; }
+        .text-theme-muted { color: var(--muted); transition: color 0.3s ease; }
+        .text-theme-accent { color: var(--accent); transition: color 0.3s ease; }
+
+        /* ---- 3D Perspective Grid ---- */
+        .perspective-grid {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .perspective-grid canvas {
+            width: 100%; height: 100%;
+        }
+
+        /* ---- 3D Hero Parallax ---- */
+        .hero-3d-wrapper {
+            perspective: 1000px;
+            perspective-origin: 50% 50%;
+        }
+        .hero-3d-content {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+        .depth-1 { transform: translateZ(0px); }
+        .depth-2 { transform: translateZ(20px); }
+        .depth-3 { transform: translateZ(40px); }
+
+        /* ---- Enhanced 3D Card ---- */
+        .project-card {
+            position: relative;
+        }
+
+        .project-card:hover {
+            box-shadow: 0 8px 30px color-mix(in srgb, var(--accent) 8%, transparent),
+                        0 0 1px color-mix(in srgb, var(--accent) 15%, transparent);
+        }
+
+        /* ---- Card hover reveal ---- */
+        .card-extra {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease 0.05s;
+        }
+        .project-card:hover .card-extra {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
+        .card-extra-inner {
+            overflow: hidden;
+        }
+        .card-extra-stats {
+            padding-top: 0.75rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+        .card-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .card-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+        .card-stat-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        /* ---- 3D Float animation for section headings ---- */
+        .float-3d {
+            animation: float3d 6s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+        @keyframes float3d {
+            0%, 100% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-6px) rotateX(2deg); }
+        }
+
+        /* ---- Scroll parallax sections ---- */
+        .parallax-section {
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            #particle-canvas { display: none; }
+            #grid-canvas { display: none; }
+            .cursor-glow { display: none; }
+            .fade-section { opacity: 1; transform: none; }
+            .float-3d { animation: none; }
+            .parallax-section { transform: none !important; }
+            .hero-3d-content { transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Cursor glow (desktop only) -->
+    <div class="cursor-glow hidden md:block" id="cursor-glow"></div>
+
+    <!-- Animated cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- ============ NAV ============ -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+        <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+            <a href="#" class="font-medium text-theme-fg text-sm hover:text-theme-accent transition-colors cursor-pointer">
+                abhishek.
+            </a>
+
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#work" class="nav-link text-[13px] text-theme-muted hover:text-theme-fg transition-colors cursor-pointer">work</a>
+                <a href="#about" class="nav-link text-[13px] text-theme-muted hover:text-theme-fg transition-colors cursor-pointer">about</a>
+                <a href="#contact" class="nav-link text-[13px] text-theme-muted hover:text-theme-fg transition-colors cursor-pointer">contact</a>
+                <a href="./resume.pdf" target="_blank" class="text-[13px] text-theme-muted hover:text-theme-fg transition-colors cursor-pointer flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3 h-3"></i>resume
+                </a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon theme-icon-sun"></i>
+                    <i data-lucide="moon" class="theme-icon theme-icon-moon"></i>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-3 md:hidden">
+                <button id="theme-toggle-mobile" class="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon theme-icon-sun"></i>
+                    <i data-lucide="moon" class="theme-icon theme-icon-moon"></i>
+                </button>
+                <button id="menu-toggle" class="text-theme-muted hover:text-theme-fg cursor-pointer" aria-label="Menu">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-56 h-full p-8 md:hidden z-50">
+            <button id="menu-close" class="absolute top-4 right-4 text-theme-muted hover:text-theme-fg cursor-pointer" aria-label="Close">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="flex flex-col gap-5 mt-14">
+                <a href="#work" class="text-theme-fg hover:text-theme-accent transition-colors cursor-pointer" onclick="closeMobileMenu()">work</a>
+                <a href="#about" class="text-theme-fg hover:text-theme-accent transition-colors cursor-pointer" onclick="closeMobileMenu()">about</a>
+                <a href="#contact" class="text-theme-fg hover:text-theme-accent transition-colors cursor-pointer" onclick="closeMobileMenu()">contact</a>
+                <a href="./resume.pdf" target="_blank" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" onclick="closeMobileMenu()">resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative z-10">
+
+        <!-- ============ HERO ============ -->
+        <section class="min-h-screen flex items-center pt-14 relative overflow-hidden" id="hero">
+            <!-- 3D Perspective Grid -->
+            <div class="perspective-grid">
+                <canvas id="grid-canvas"></canvas>
+            </div>
+
+            <div class="max-w-3xl mx-auto px-6 w-full py-24 hero-3d-wrapper">
+                <div class="hero-3d-content" id="hero-3d">
+
+                    <div class="flex items-center gap-2.5 mb-8 fade-section depth-1">
+                        <div class="pulse-dot"></div>
+                        <span class="text-[13px] text-theme-muted">Building @ ChannelBlend Technologies</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl font-semibold text-theme-fg leading-[1.15] tracking-tight mb-6 fade-section depth-3">
+                        I'm Abhishek<span class="text-theme-accent">.</span><br>
+                        <span class="text-theme-muted font-normal">I build <span id="typed" class="text-theme-fg type-cursor"></span></span>
+                    </h1>
+
+                    <p class="text-theme-muted max-w-lg leading-relaxed mb-8 fade-section depth-2">
+                        Full-stack developer specializing in React, Node.js, and TypeScript.
+                        Currently building AI-powered tools and Shopify integrations at
+                        <span class="text-theme-fg">ChannelBlend Technologies</span>.
+                    </p>
+
+                    <div class="flex items-center gap-5 fade-section depth-1">
+                        <a href="mailto:abhisheknaik1112@gmail.com" class="arrow-link text-sm text-theme-fg hover:text-theme-accent transition-colors cursor-pointer">
+                            Get in touch <span class="text-theme-accent">&#8599;</span>
+                        </a>
+                        <div class="flex items-center gap-3">
+                            <a href="https://github.com/AbhishekNaik1112" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="GitHub">
+                                <i data-lucide="github" class="w-[18px] h-[18px]"></i>
+                            </a>
+                            <a href="https://linkedin.com/in/abhisheknaik1112" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="LinkedIn">
+                                <i data-lucide="linkedin" class="w-[18px] h-[18px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div class="divider max-w-3xl mx-auto"></div>
+
+        <!-- ============ WORK ============ -->
+        <section id="work" class="py-24 parallax-section">
+            <div class="max-w-3xl mx-auto px-6">
+
+                <p class="text-theme-muted text-sm mb-10 max-w-md fade-section">
+                    I solve hard problems with clean code.
+                    Here's a selection of recent work — full-stack apps with real users, live deployments, and measurable impact.
+                </p>
+
+                <div class="grid gap-4 fade-section">
+
+                    <!-- VozEngine -->
+                    <a href="https://voz-engine.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card group block">
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="font-medium text-theme-fg group-hover:text-theme-accent transition-colors">VozEngine</h3>
+                            <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
+                        </div>
+                        <p class="text-theme-muted text-sm leading-relaxed mb-4">
+                            Voice-to-code tool that transforms spoken ideas into functional code.
+                            Makes programming accessible to developers with physical disabilities.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tag">TypeScript</span>
+                                <span class="tag">React</span>
+                                <span class="tag">Voice API</span>
+                            </div>
+                            <a href="https://github.com/AbhishekNaik1112/VozEngine" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
+                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                            </a>
+                        </div>
+                        <div class="card-extra">
+                            <div class="card-extra-inner"><div class="card-extra-stats">
+                                <div class="card-stat"><span class="card-stat-value">Live</span><span class="card-stat-label">Deployed on Vercel</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Web Speech API</span><span class="card-stat-label">Real-time voice recognition</span></div>
+                                <div class="card-stat"><span class="card-stat-value">A11y</span><span class="card-stat-label">Accessibility-first design</span></div>
+                            </div></div>
+                        </div>
+                    </a>
+
+                    <!-- FraudLens -->
+                    <a href="https://fraudlens.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card group block">
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="font-medium text-theme-fg group-hover:text-theme-accent transition-colors">FraudLens</h3>
+                            <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
+                        </div>
+                        <p class="text-theme-muted text-sm leading-relaxed mb-4">
+                            Fraud detection platform with real-time analytics to identify
+                            fraudulent patterns and protect users. 120K+ lines of TypeScript.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tag">TypeScript</span>
+                                <span class="tag">React</span>
+                                <span class="tag">Analytics</span>
+                            </div>
+                            <a href="https://github.com/AbhishekNaik1112/FraudLens" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
+                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                            </a>
+                        </div>
+                        <div class="card-extra">
+                            <div class="card-extra-inner"><div class="card-extra-stats">
+                                <div class="card-stat"><span class="card-stat-value">120K+</span><span class="card-stat-label">Lines of code</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Real-time</span><span class="card-stat-label">Pattern detection</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Dashboard</span><span class="card-stat-label">Analytics & charts</span></div>
+                            </div></div>
+                        </div>
+                    </a>
+
+                    <!-- Medisure -->
+                    <a href="https://claims-management-system-client.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card group block">
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="font-medium text-theme-fg group-hover:text-theme-accent transition-colors">Medisure</h3>
+                            <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
+                        </div>
+                        <p class="text-theme-muted text-sm leading-relaxed mb-4">
+                            Full-stack insurance claims management. Patients submit claims,
+                            insurers review and process them. JWT auth, REST API, role-based access.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tag">React</span>
+                                <span class="tag">NestJS</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">JWT</span>
+                            </div>
+                            <a href="https://github.com/AbhishekNaik1112/Medisure" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
+                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                            </a>
+                        </div>
+                        <div class="card-extra">
+                            <div class="card-extra-inner"><div class="card-extra-stats">
+                                <div class="card-stat"><span class="card-stat-value">RBAC</span><span class="card-stat-label">Role-based access</span></div>
+                                <div class="card-stat"><span class="card-stat-value">REST</span><span class="card-stat-label">Full CRUD API</span></div>
+                                <div class="card-stat"><span class="card-stat-value">JWT</span><span class="card-stat-label">Secure auth flow</span></div>
+                            </div></div>
+                        </div>
+                    </a>
+
+                    <!-- GradeFlow -->
+                    <a href="https://github.com/AbhishekNaik1112/GradeFlow" target="_blank" rel="noopener noreferrer" class="project-card group block">
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="font-medium text-theme-fg group-hover:text-theme-accent transition-colors">GradeFlow</h3>
+                            <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
+                        </div>
+                        <p class="text-theme-muted text-sm leading-relaxed mb-4">
+                            AI-powered study tracker with Xenova Transformers. Smart notifications
+                            for deadlines boosted user productivity by 40%. AI Hackathon finalist.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tag">Next.js</span>
+                                <span class="tag">Node.js</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">AI/ML</span>
+                            </div>
+                            <a href="https://github.com/AbhishekNaik1112/GradeFlow" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
+                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                            </a>
+                        </div>
+                        <div class="card-extra">
+                            <div class="card-extra-inner"><div class="card-extra-stats">
+                                <div class="card-stat"><span class="card-stat-value">+40%</span><span class="card-stat-label">Productivity boost</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Xenova</span><span class="card-stat-label">AI Transformers</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Finalist</span><span class="card-stat-label">AI Hackathon</span></div>
+                            </div></div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="mt-8 fade-section">
+                    <a href="https://github.com/AbhishekNaik1112" target="_blank" rel="noopener noreferrer" class="arrow-link text-sm text-theme-muted hover:text-theme-fg transition-colors cursor-pointer">
+                        All projects on GitHub <span>&#8599;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider max-w-3xl mx-auto"></div>
+
+        <!-- ============ ABOUT ============ -->
+        <section id="about" class="py-24 parallax-section">
+            <div class="max-w-3xl mx-auto px-6">
+
+                <div class="grid md:grid-cols-3 gap-12">
+
+                    <!-- Bio -->
+                    <div class="md:col-span-2 fade-section">
+                        <h2 class="text-lg font-medium text-theme-fg mb-5 float-3d">About</h2>
+                        <div class="space-y-4 text-theme-muted text-[15px] leading-relaxed">
+                            <p>
+                                I've been building for the web since 2023 — shipping
+                                <span class="text-theme-fg">170+ projects</span> from voice-powered coding tools
+                                to fraud detection platforms. I care about writing clean code
+                                that solves real problems.
+                            </p>
+                            <p>
+                                Right now I'm an intern at <span class="text-theme-fg">ChannelBlend Technologies</span>,
+                                where I build AI-powered WhatsApp automation, Shopify integrations,
+                                and data pipelines using GraphQL. I'm also pursuing a BCA (Hons.)
+                                at Kalvium with a CGPA of 8.1.
+                            </p>
+                        </div>
+
+                        <!-- Experience -->
+                        <div class="mt-10">
+                            <h3 class="text-sm font-medium text-theme-fg mb-4">Experience</h3>
+                            <div class="timeline-border pl-5 space-y-6">
+                                <div>
+                                    <p class="text-[15px] text-theme-fg">Full-Stack Engineer Intern</p>
+                                    <p class="text-sm text-theme-muted">ChannelBlend Technologies &middot; <span class="font-mono text-xs">Apr 2025 — Present</span></p>
+                                    <ul class="mt-2 space-y-1 text-sm text-theme-muted">
+                                        <li>Built Intent Parser for AI WhatsApp conversations</li>
+                                        <li>Debug Panel reducing debugging time by 30%</li>
+                                        <li>Data pipelines with Shopify GraphQL API</li>
+                                        <li>Testing scripts achieving 95% coverage</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="text-[15px] text-theme-fg">BCA (Hons.) Computer Applications</p>
+                                    <p class="text-sm text-theme-muted">Y.I.A.S.C.M x Kalvium &middot; <span class="font-mono text-xs">2023 — 2027</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stack -->
+                    <div class="fade-section">
+                        <h2 class="text-lg font-medium text-theme-fg mb-5 float-3d" style="animation-delay: 1s;">Stack</h2>
+                        <div class="space-y-5 text-sm">
+                            <div>
+                                <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">Languages</p>
+                                <p class="text-theme-fg leading-relaxed">JavaScript, TypeScript, Python, C++</p>
+                            </div>
+                            <div>
+                                <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">Frontend</p>
+                                <p class="text-theme-fg leading-relaxed">React, Next.js, Tailwind, Redux</p>
+                            </div>
+                            <div>
+                                <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">Backend</p>
+                                <p class="text-theme-fg leading-relaxed">Node.js, Express, NestJS, Django</p>
+                            </div>
+                            <div>
+                                <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">Data</p>
+                                <p class="text-theme-fg leading-relaxed">MongoDB, PostgreSQL, Redis, Firebase</p>
+                            </div>
+                            <div>
+                                <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">DevOps</p>
+                                <p class="text-theme-fg leading-relaxed">Docker, GCP, Git, CI/CD</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 space-y-2 text-sm text-theme-muted">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="trophy" class="w-3.5 h-3.5 text-theme-accent"></i>
+                                <span>100+ DSA on LeetCode</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="award" class="w-3.5 h-3.5 text-theme-accent"></i>
+                                <span>Antarya IT Fest placements</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="zap" class="w-3.5 h-3.5 text-theme-accent"></i>
+                                <span>AI Hackathon finalist</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider max-w-3xl mx-auto"></div>
+
+        <!-- ============ CONTACT ============ -->
+        <section id="contact" class="py-24">
+            <div class="max-w-3xl mx-auto px-6 fade-section">
+                <h2 class="text-lg font-medium text-theme-fg mb-4">Let's work together</h2>
+                <p class="text-theme-muted text-[15px] leading-relaxed mb-6 max-w-md">
+                    I'm looking for new opportunities. If you have a project,
+                    a question, or just want to say hi — reach out.
+                </p>
+                <div class="flex flex-wrap items-center gap-5">
+                    <a href="mailto:abhisheknaik1112@gmail.com" class="arrow-link text-sm text-theme-fg hover:text-theme-accent transition-colors cursor-pointer">
+                        abhisheknaik1112@gmail.com <span class="text-theme-accent">&#8599;</span>
+                    </a>
+                    <a href="https://linkedin.com/in/abhisheknaik1112" target="_blank" rel="noopener noreferrer" class="arrow-link text-sm text-theme-muted hover:text-theme-fg transition-colors cursor-pointer">
+                        LinkedIn <span>&#8599;</span>
+                    </a>
+                    <a href="https://github.com/AbhishekNaik1112" target="_blank" rel="noopener noreferrer" class="arrow-link text-sm text-theme-muted hover:text-theme-fg transition-colors cursor-pointer">
+                        GitHub <span>&#8599;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ FOOTER ============ -->
+        <footer class="py-8 footer-border">
+            <div class="max-w-3xl mx-auto px-6 flex items-center justify-between">
+                <p class="text-theme-muted text-xs font-mono">Abhishek G Naik</p>
+                <p class="text-theme-muted text-xs font-mono">2025</p>
+            </div>
+        </footer>
+
+    </div><!-- /relative z-10 -->
+
+    <!-- ============ SCRIPTS ============ -->
+    <script>
+        // ===== THEME TOGGLE =====
+        function getTheme() {
+            const stored = localStorage.getItem('theme');
+            if (stored) return stored;
+            return 'light'; // default to light
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        // Apply theme before paint to prevent flash
+        applyTheme(getTheme());
+
+        function toggleTheme() {
+            const current = getTheme();
+            applyTheme(current === 'dark' ? 'light' : 'dark');
+        }
+
+        // ===== INIT LUCIDE & THEME BUTTONS =====
+        lucide.createIcons();
+
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+
+        // ===== PARTICLE SYSTEM =====
+        const cvs = document.getElementById('particle-canvas');
+        const ctx = cvs.getContext('2d');
+        let W, H;
+        const mouse = { x: -9999, y: -9999 };
+        const PARTICLE_COUNT = 90;
+        const CONNECT_DIST = 140;
+        const MOUSE_RADIUS = 150;
+        const particles = [];
+
+        function resize() {
+            W = cvs.width = window.innerWidth;
+            H = cvs.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+        function getVar(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * W;
+                this.y = Math.random() * H;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.r = Math.random() * 1.5 + 0.5;
+                this.green = Math.random() < 0.25;
+            }
+            update() {
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < MOUSE_RADIUS && dist > 0) {
+                    const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.8;
+                    this.vx += (dx / dist) * force;
+                    this.vy += (dy / dist) * force;
+                }
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < -10) this.x = W + 10;
+                if (this.x > W + 10) this.x = -10;
+                if (this.y < -10) this.y = H + 10;
+                if (this.y > H + 10) this.y = -10;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                ctx.fillStyle = this.green ? getVar('--particle-green') : getVar('--particle');
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, W, H);
+
+            const connColor = getVar('--connection');
+            const connGreen = getVar('--connection-green');
+            const mouseLineColor = getVar('--mouse-line');
+
+            for (const p of particles) {
+                p.update();
+                p.draw();
+            }
+
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < CONNECT_DIST) {
+                        const opacity = (1 - dist / CONNECT_DIST);
+                        const isGreen = particles[i].green || particles[j].green;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.globalAlpha = opacity * (isGreen ? 0.15 : 0.08);
+                        ctx.strokeStyle = isGreen ? connGreen : connColor;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                        ctx.globalAlpha = 1;
+                    }
+                }
+            }
+
+            for (const p of particles) {
+                const dx = p.x - mouse.x;
+                const dy = p.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < MOUSE_RADIUS) {
+                    const opacity = (1 - dist / MOUSE_RADIUS) * 0.25;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.globalAlpha = opacity;
+                    ctx.strokeStyle = mouseLineColor;
+                    ctx.lineWidth = 0.6;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+        animateParticles();
+
+        // ===== CURSOR GLOW =====
+        const cursorGlow = document.getElementById('cursor-glow');
+        if (cursorGlow) {
+            let gx = 0, gy = 0;
+            function trackGlow() {
+                gx += (mouse.x - gx) * 0.08;
+                gy += (mouse.y - gy) * 0.08;
+                cursorGlow.style.left = gx + 'px';
+                cursorGlow.style.top = gy + 'px';
+                requestAnimationFrame(trackGlow);
+            }
+            trackGlow();
+        }
+
+        // ===== ANIMATED CURSOR =====
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        if (cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches) {
+            let ringX = 0, ringY = 0;
+
+            // Hide default cursor
+            document.body.style.cursor = 'none';
+            document.querySelectorAll('a, button, .project-card, .tag, .theme-toggle').forEach(el => {
+                el.style.cursor = 'none';
+            });
+
+            function animateCursor() {
+                // Dot follows mouse exactly
+                cursorDot.style.left = mouse.x + 'px';
+                cursorDot.style.top = mouse.y + 'px';
+
+                // Ring follows with delay
+                ringX += (mouse.x - ringX) * 0.12;
+                ringY += (mouse.y - ringY) * 0.12;
+                cursorRing.style.left = ringX + 'px';
+                cursorRing.style.top = ringY + 'px';
+
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // Hover state for interactive elements
+            const hoverTargets = document.querySelectorAll('a, button, .project-card, .tag, .theme-toggle');
+            hoverTargets.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorDot.classList.add('hovering');
+                    cursorRing.classList.add('hovering');
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorDot.classList.remove('hovering');
+                    cursorRing.classList.remove('hovering');
+                });
+            });
+
+            // Hide cursor when mouse leaves window
+            document.addEventListener('mouseleave', () => {
+                cursorDot.style.opacity = '0';
+                cursorRing.style.opacity = '0';
+            });
+            document.addEventListener('mouseenter', () => {
+                cursorDot.style.opacity = '1';
+                cursorRing.style.opacity = '0.4';
+            });
+        }
+
+        // ===== MOBILE MENU =====
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuClose = document.getElementById('menu-close');
+        menuToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+        menuClose.addEventListener('click', closeMobileMenu);
+        function closeMobileMenu() { mobileMenu.classList.remove('active'); }
+
+        // ===== SCROLL REVEAL =====
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.fade-section').forEach(el => fadeObserver.observe(el));
+
+        // ===== TYPING ANIMATION =====
+        const words = ['scalable web apps.', 'fullstack systems.', 'AI-powered tools.', 'clean interfaces.', 'real-time features.'];
+        let wi = 0, ci = 0, deleting = false;
+        const typedEl = document.getElementById('typed');
+
+        function typeLoop() {
+            const word = words[wi];
+            if (deleting) {
+                typedEl.textContent = word.substring(0, ci--);
+                if (ci < 0) { deleting = false; wi = (wi + 1) % words.length; setTimeout(typeLoop, 500); return; }
+                setTimeout(typeLoop, 35);
+            } else {
+                typedEl.textContent = word.substring(0, ci++);
+                if (ci > word.length) { deleting = true; setTimeout(typeLoop, 2200); return; }
+                setTimeout(typeLoop, 70);
+            }
+        }
+        setTimeout(typeLoop, 800);
+
+        // ===== 3D PERSPECTIVE GRID =====
+        const gridCvs = document.getElementById('grid-canvas');
+        const gridCtx = gridCvs.getContext('2d');
+        let gW, gH;
+
+        function resizeGrid() {
+            const hero = document.getElementById('hero');
+            gW = gridCvs.width = hero.offsetWidth;
+            gH = gridCvs.height = hero.offsetHeight;
+        }
+        window.addEventListener('resize', resizeGrid);
+        resizeGrid();
+
+        let gridOffset = 0;
+        function drawGrid() {
+            requestAnimationFrame(drawGrid);
+            gridCtx.clearRect(0, 0, gW, gH);
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const lineColor = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.04)';
+            const accentLine = isDark ? 'rgba(34,197,94,0.06)' : 'rgba(22,163,74,0.06)';
+
+            gridCtx.strokeStyle = lineColor;
+            gridCtx.lineWidth = 0.5;
+
+            const vanishX = gW * 0.5 + (mouse.x - gW / 2) * 0.05;
+            const vanishY = gH * 0.35 + (mouse.y - gH / 2) * 0.03;
+            const rows = 18;
+            const cols = 14;
+
+            gridOffset += 0.15;
+            if (gridOffset > 50) gridOffset = 0;
+
+            // Horizontal lines with perspective
+            for (let i = 0; i <= rows; i++) {
+                const t = (i + gridOffset / 50) / rows;
+                const y = vanishY + (gH - vanishY) * Math.pow(t, 1.8);
+                const spread = 0.3 + t * 0.7;
+                const x1 = vanishX - (gW * 0.7 * spread);
+                const x2 = vanishX + (gW * 0.7 * spread);
+
+                gridCtx.globalAlpha = Math.pow(t, 1.5) * 0.8;
+                gridCtx.strokeStyle = (i % 4 === 0) ? accentLine : lineColor;
+                gridCtx.beginPath();
+                gridCtx.moveTo(x1, y);
+                gridCtx.lineTo(x2, y);
+                gridCtx.stroke();
+            }
+
+            // Vertical lines converging to vanishing point
+            for (let j = -cols / 2; j <= cols / 2; j++) {
+                const baseX = vanishX + j * (gW / cols);
+                gridCtx.globalAlpha = 0.4 * (1 - Math.abs(j) / (cols / 2) * 0.5);
+                gridCtx.strokeStyle = (j === 0) ? accentLine : lineColor;
+                gridCtx.beginPath();
+                gridCtx.moveTo(vanishX, vanishY);
+                gridCtx.lineTo(baseX, gH);
+                gridCtx.stroke();
+            }
+
+            gridCtx.globalAlpha = 1;
+        }
+        drawGrid();
+
+        // ===== 3D HERO PARALLAX =====
+        const hero3d = document.getElementById('hero-3d');
+        let heroRx = 0, heroRy = 0;
+        let targetHeroRx = 0, targetHeroRy = 0;
+
+        function updateHeroParallax() {
+            const heroSection = document.getElementById('hero');
+            if (!heroSection) return;
+            const rect = heroSection.getBoundingClientRect();
+
+            // Only apply when hero is visible
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const mx = mouse.x - rect.left;
+                const my = mouse.y - rect.top;
+
+                targetHeroRx = ((my - cy) / cy) * -2;
+                targetHeroRy = ((mx - cx) / cx) * 2;
+            }
+
+            heroRx += (targetHeroRx - heroRx) * 0.06;
+            heroRy += (targetHeroRy - heroRy) * 0.06;
+
+            hero3d.style.transform = `rotateX(${heroRx}deg) rotateY(${heroRy}deg)`;
+
+            requestAnimationFrame(updateHeroParallax);
+        }
+        updateHeroParallax();
+
+        // ===== ENHANCED 3D CARD TILT + GLOW =====
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const rx = ((y - cy) / cy) * -5;
+                const ry = ((x - cx) / cx) * 5;
+
+                card.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px) scale(1.01)`;
+                card.style.setProperty('--mouse-x', x + 'px');
+                card.style.setProperty('--mouse-y', y + 'px');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+            });
+        });
+
+        // ===== SCROLL PARALLAX =====
+        function scrollParallax() {
+            const scrollY = window.scrollY;
+            document.querySelectorAll('.parallax-section').forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const center = rect.top + rect.height / 2;
+                const viewCenter = window.innerHeight / 2;
+                const offset = (center - viewCenter) / window.innerHeight;
+                section.style.transform = `perspective(1200px) rotateX(${offset * 1.5}deg) translateZ(${-Math.abs(offset) * 10}px)`;
+            });
+            requestAnimationFrame(scrollParallax);
+        }
+        scrollParallax();
+
+        // ===== NAV ACTIVE STATE =====
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('a.nav-link');
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.style.color = '';
+                        if (link.getAttribute('href') === '#' + entry.target.id) {
+                            link.style.color = 'var(--fg)';
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-20% 0px -80% 0px' });
+        sections.forEach(s => navObserver.observe(s));
+    </script>
+</body>
+</html>
