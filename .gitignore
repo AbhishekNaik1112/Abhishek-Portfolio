@@ -1,0 +1,30 @@
+# Dependencies
+/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Build caches (NOTE: styles.css is a committed build artifact — do NOT ignore it)
+.cache/
+.parcel-cache/
+.tmp/
+
+CLAUDE.md

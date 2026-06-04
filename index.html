@@ -7,25 +7,14 @@
     <meta name="description" content="Full-Stack Developer building scalable web apps with React, Node.js, TypeScript.">
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                }
-            }
-        }
-    </script>
+    <!-- Compiled Tailwind (static). Regenerate with: npm run build:css -->
+    <link rel="stylesheet" href="./styles.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js"></script>
 
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -217,13 +206,15 @@
             mix-blend-mode: difference;
         }
         .cursor-dot {
-            width: 6px; height: 6px;
-            background: #fff;
+            width: 9px; height: 9px;
+            background: var(--fg);
             border-radius: 50%;
             position: fixed;
+            left: -100px; top: -100px;
             pointer-events: none;
             z-index: 10000;
             transform: translate(-50%, -50%);
+            box-shadow: 0 0 0 2px var(--bg), 0 1px 3px rgba(0,0,0,0.35);
             transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
         }
         .cursor-dot.hovering {
@@ -231,15 +222,16 @@
             background: var(--accent);
         }
         .cursor-ring {
-            width: 36px; height: 36px;
-            border: 1.5px solid var(--fg);
+            width: 34px; height: 34px;
+            border: 2px solid var(--fg);
             border-radius: 50%;
             position: fixed;
+            left: -100px; top: -100px;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
             transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
-            opacity: 0.4;
+            opacity: 0.7;
         }
         .cursor-ring.hovering {
             width: 50px; height: 50px;
@@ -435,9 +427,6 @@
     <!-- Cursor glow (desktop only) -->
     <div class="cursor-glow hidden md:block" id="cursor-glow"></div>
 
-    <!-- Animated cursor -->
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-ring" id="cursor-ring"></div>
 
     <!-- ============ NAV ============ -->
     <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
@@ -517,10 +506,10 @@
                         </a>
                         <div class="flex items-center gap-3">
                             <a href="https://github.com/AbhishekNaik1112" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="GitHub">
-                                <i data-lucide="github" class="w-[18px] h-[18px]"></i>
+                                <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                             </a>
                             <a href="https://linkedin.com/in/abhisheknaik1112" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="LinkedIn">
-                                <i data-lucide="linkedin" class="w-[18px] h-[18px]"></i>
+                                <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
                             </a>
                         </div>
                     </div>
@@ -542,6 +531,37 @@
 
                 <div class="grid gap-4 fade-section">
 
+                    <!-- RankForge -->
+                    <a href="https://github.com/AbhishekNaik1112/RankForge" target="_blank" rel="noopener noreferrer" class="project-card group block">
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="font-medium text-theme-fg group-hover:text-theme-accent transition-colors">RankForge</h3>
+                            <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
+                        </div>
+                        <p class="text-theme-muted text-sm leading-relaxed mb-4">
+                            Local-first desktop engine for semantic + keyword search across your own
+                            files — PDFs, docs, slides and images — ranked by a hybrid relevance model
+                            built on CLIP embeddings and pgvector.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tag">Electron</span>
+                                <span class="tag">React 19</span>
+                                <span class="tag">FastAPI</span>
+                                <span class="tag">pgvector</span>
+                            </div>
+                            <a href="https://github.com/AbhishekNaik1112/RankForge" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
+                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                            </a>
+                        </div>
+                        <div class="card-extra">
+                            <div class="card-extra-inner"><div class="card-extra-stats">
+                                <div class="card-stat"><span class="card-stat-value">Hybrid</span><span class="card-stat-label">Semantic + keyword + graph</span></div>
+                                <div class="card-stat"><span class="card-stat-value">CLIP</span><span class="card-stat-label">512-d embeddings</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Local-first</span><span class="card-stat-label">Runs fully on-device</span></div>
+                            </div></div>
+                        </div>
+                    </a>
+
                     <!-- VozEngine -->
                     <a href="https://voz-engine.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card group block">
                         <div class="flex items-start justify-between mb-3">
@@ -559,7 +579,7 @@
                                 <span class="tag">Voice API</span>
                             </div>
                             <a href="https://github.com/AbhishekNaik1112/VozEngine" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
-                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                             </a>
                         </div>
                         <div class="card-extra">
@@ -578,24 +598,26 @@
                             <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
                         </div>
                         <p class="text-theme-muted text-sm leading-relaxed mb-4">
-                            Fraud detection platform with real-time analytics to identify
-                            fraudulent patterns and protect users. 120K+ lines of TypeScript.
+                            Fraud-detection dashboard that monitors malicious apps and URLs in
+                            real time, with 30-day trend analytics and a Gemini-AI assistant for
+                            analyst queries.
                         </p>
                         <div class="flex items-center justify-between">
                             <div class="flex flex-wrap gap-1.5">
-                                <span class="tag">TypeScript</span>
-                                <span class="tag">React</span>
-                                <span class="tag">Analytics</span>
+                                <span class="tag">Next.js</span>
+                                <span class="tag">Zustand</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">Gemini AI</span>
                             </div>
                             <a href="https://github.com/AbhishekNaik1112/FraudLens" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
-                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                             </a>
                         </div>
                         <div class="card-extra">
                             <div class="card-extra-inner"><div class="card-extra-stats">
-                                <div class="card-stat"><span class="card-stat-value">120K+</span><span class="card-stat-label">Lines of code</span></div>
-                                <div class="card-stat"><span class="card-stat-value">Real-time</span><span class="card-stat-label">Pattern detection</span></div>
-                                <div class="card-stat"><span class="card-stat-value">Dashboard</span><span class="card-stat-label">Analytics & charts</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Real-time</span><span class="card-stat-label">Live SWR monitoring</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Gemini AI</span><span class="card-stat-label">Analyst assistant</span></div>
+                                <div class="card-stat"><span class="card-stat-value">RBAC</span><span class="card-stat-label">Admin & Analyst roles</span></div>
                             </div></div>
                         </div>
                     </a>
@@ -618,7 +640,7 @@
                                 <span class="tag">JWT</span>
                             </div>
                             <a href="https://github.com/AbhishekNaik1112/Medisure" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
-                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                             </a>
                         </div>
                         <div class="card-extra">
@@ -648,7 +670,7 @@
                                 <span class="tag">AI/ML</span>
                             </div>
                             <a href="https://github.com/AbhishekNaik1112/GradeFlow" target="_blank" rel="noopener noreferrer" class="text-theme-muted hover:text-theme-fg transition-colors cursor-pointer" aria-label="Source" onclick="event.stopPropagation()">
-                                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                             </a>
                         </div>
                         <div class="card-extra">
@@ -683,15 +705,15 @@
                         <div class="space-y-4 text-theme-muted text-[15px] leading-relaxed">
                             <p>
                                 I've been building for the web since 2023 — shipping
-                                <span class="text-theme-fg">170+ projects</span> from voice-powered coding tools
-                                to fraud detection platforms. I care about writing clean code
-                                that solves real problems.
+                                <span class="text-theme-fg">170+ public repositories</span>, from voice-powered
+                                coding tools and fraud-detection dashboards to a local-first AI search
+                                engine. I care about writing clean code that solves real problems.
                             </p>
                             <p>
                                 Right now I'm an intern at <span class="text-theme-fg">ChannelBlend Technologies</span>,
-                                where I build AI-powered WhatsApp automation, Shopify integrations,
-                                and data pipelines using GraphQL. I'm also pursuing a BCA (Hons.)
-                                at Kalvium with a CGPA of 8.1.
+                                where I build AI-powered WhatsApp sales agents, Elixir/Phoenix backend
+                                services, and Shopify integrations. I'm also pursuing a BCA (Hons.)
+                                at Kalvium <span class="text-theme-fg">(CGPA 7.6, 6th semester)</span>.
                             </p>
                         </div>
 
@@ -703,10 +725,11 @@
                                     <p class="text-[15px] text-theme-fg">Full-Stack Engineer Intern</p>
                                     <p class="text-sm text-theme-muted">ChannelBlend Technologies &middot; <span class="font-mono text-xs">Apr 2025 — Present</span></p>
                                     <ul class="mt-2 space-y-1 text-sm text-theme-muted">
-                                        <li>Built Intent Parser for AI WhatsApp conversations</li>
-                                        <li>Debug Panel reducing debugging time by 30%</li>
-                                        <li>Data pipelines with Shopify GraphQL API</li>
-                                        <li>Testing scripts achieving 95% coverage</li>
+                                        <li>Intent-parser core + AI sales-agent for WhatsApp (Python/FastAPI)</li>
+                                        <li>LLM evaluation &amp; simulation harness (judge rubrics, replay runner)</li>
+                                        <li>Elixir/Phoenix backend — search, Loki ingestion, Lead Reports API</li>
+                                        <li>React/TS operator dashboards + AI-Agent Debug Panel</li>
+                                        <li>Node Shopify ingestion &amp; Liquid storefront</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -727,19 +750,23 @@
                             </div>
                             <div>
                                 <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">Frontend</p>
-                                <p class="text-theme-fg leading-relaxed">React, Next.js, Tailwind, Redux</p>
+                                <p class="text-theme-fg leading-relaxed">React, Next.js, Tailwind, Redux, Zustand</p>
                             </div>
                             <div>
                                 <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">Backend</p>
-                                <p class="text-theme-fg leading-relaxed">Node.js, Express, NestJS, Django</p>
+                                <p class="text-theme-fg leading-relaxed">Node.js, NestJS, FastAPI, Elixir/Phoenix, Django</p>
                             </div>
                             <div>
                                 <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">Data</p>
-                                <p class="text-theme-fg leading-relaxed">MongoDB, PostgreSQL, Redis, Firebase</p>
+                                <p class="text-theme-fg leading-relaxed">MongoDB, PostgreSQL, pgvector, Prisma, Redis, Firebase</p>
                             </div>
                             <div>
                                 <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">DevOps</p>
                                 <p class="text-theme-fg leading-relaxed">Docker, GCP, Git, CI/CD</p>
+                            </div>
+                            <div>
+                                <p class="text-theme-muted font-mono text-xs mb-2 uppercase tracking-wider">AI / ML</p>
+                                <p class="text-theme-fg leading-relaxed">CLIP embeddings, Xenova Transformers, Gemini AI</p>
                             </div>
                         </div>
 
@@ -956,57 +983,6 @@
                 requestAnimationFrame(trackGlow);
             }
             trackGlow();
-        }
-
-        // ===== ANIMATED CURSOR =====
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorRing = document.getElementById('cursor-ring');
-        if (cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches) {
-            let ringX = 0, ringY = 0;
-
-            // Hide default cursor
-            document.body.style.cursor = 'none';
-            document.querySelectorAll('a, button, .project-card, .tag, .theme-toggle').forEach(el => {
-                el.style.cursor = 'none';
-            });
-
-            function animateCursor() {
-                // Dot follows mouse exactly
-                cursorDot.style.left = mouse.x + 'px';
-                cursorDot.style.top = mouse.y + 'px';
-
-                // Ring follows with delay
-                ringX += (mouse.x - ringX) * 0.12;
-                ringY += (mouse.y - ringY) * 0.12;
-                cursorRing.style.left = ringX + 'px';
-                cursorRing.style.top = ringY + 'px';
-
-                requestAnimationFrame(animateCursor);
-            }
-            animateCursor();
-
-            // Hover state for interactive elements
-            const hoverTargets = document.querySelectorAll('a, button, .project-card, .tag, .theme-toggle');
-            hoverTargets.forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    cursorDot.classList.add('hovering');
-                    cursorRing.classList.add('hovering');
-                });
-                el.addEventListener('mouseleave', () => {
-                    cursorDot.classList.remove('hovering');
-                    cursorRing.classList.remove('hovering');
-                });
-            });
-
-            // Hide cursor when mouse leaves window
-            document.addEventListener('mouseleave', () => {
-                cursorDot.style.opacity = '0';
-                cursorRing.style.opacity = '0';
-            });
-            document.addEventListener('mouseenter', () => {
-                cursorDot.style.opacity = '1';
-                cursorRing.style.opacity = '0.4';
-            });
         }
 
         // ===== MOBILE MENU =====
