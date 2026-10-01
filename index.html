@@ -198,53 +198,6 @@
             transition: opacity 0.3s ease;
         }
 
-        /* ---- Animated custom cursor ---- */
-        .custom-cursor {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-        }
-        .cursor-dot {
-            width: 9px; height: 9px;
-            background: var(--fg);
-            border-radius: 50%;
-            position: fixed;
-            left: -100px; top: -100px;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 0 2px var(--bg), 0 1px 3px rgba(0,0,0,0.35);
-            transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
-        }
-        .cursor-dot.hovering {
-            width: 10px; height: 10px;
-            background: var(--accent);
-        }
-        .cursor-ring {
-            width: 34px; height: 34px;
-            border: 2px solid var(--fg);
-            border-radius: 50%;
-            position: fixed;
-            left: -100px; top: -100px;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
-            opacity: 0.7;
-        }
-        .cursor-ring.hovering {
-            width: 50px; height: 50px;
-            border-color: var(--accent);
-            opacity: 0.6;
-        }
-        @media (pointer: coarse), (max-width: 768px) {
-            .cursor-dot, .cursor-ring { display: none; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .cursor-dot, .cursor-ring { display: none; }
-        }
-
         /* ---- Mobile menu ---- */
         .mobile-menu {
             transform: translateX(100%);
@@ -453,7 +406,7 @@
                     <i data-lucide="sun" class="theme-icon theme-icon-sun"></i>
                     <i data-lucide="moon" class="theme-icon theme-icon-moon"></i>
                 </button>
-                <button id="menu-toggle" class="text-theme-muted hover:text-theme-fg cursor-pointer" aria-label="Menu">
+                <button id="menu-toggle" class="text-theme-muted hover:text-theme-fg cursor-pointer" aria-label="Menu" aria-expanded="false">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -534,7 +487,7 @@
 
                     <!-- Knowledge Atlas -->
                     <div class="project-card group relative">
-                        <a href="https://github.com/AbhishekNaik1112/knowledge-atlas" target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 cursor-pointer" aria-label="Knowledge Atlas — open project"></a>
+                        <a href="https://knowledge-atlas-xani.onrender.com" target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 cursor-pointer" aria-label="Knowledge Atlas — open live demo"></a>
                         <div class="flex items-start justify-between mb-3">
                             <h3 class="font-medium text-theme-fg group-hover:text-theme-accent transition-colors">Knowledge Atlas</h3>
                             <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
@@ -559,7 +512,7 @@
                             <div class="card-extra-inner"><div class="card-extra-stats">
                                 <div class="card-stat"><span class="card-stat-value">116 tests</span><span class="card-stat-label">Built test-first (TDD)</span></div>
                                 <div class="card-stat"><span class="card-stat-value">Hybrid</span><span class="card-stat-label">RRF over FTS + vectors</span></div>
-                                <div class="card-stat"><span class="card-stat-value">OKF</span><span class="card-stat-label">Google's knowledge format</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Live</span><span class="card-stat-label">Deployed on Render + Neon</span></div>
                             </div></div>
                         </div>
                     </div>
@@ -598,7 +551,7 @@
 
                     <!-- VozEngine -->
                     <div class="project-card group relative">
-                        <a href="https://voz-engine.vercel.app" target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 cursor-pointer" aria-label="VozEngine — open live demo"></a>
+                        <a href="https://github.com/AbhishekNaik1112/VozEngine" target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-0 cursor-pointer" aria-label="VozEngine — open project"></a>
                         <div class="flex items-start justify-between mb-3">
                             <h3 class="font-medium text-theme-fg group-hover:text-theme-accent transition-colors">VozEngine</h3>
                             <span class="text-theme-muted text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">&#8599;</span>
@@ -619,7 +572,7 @@
                         </div>
                         <div class="card-extra">
                             <div class="card-extra-inner"><div class="card-extra-stats">
-                                <div class="card-stat"><span class="card-stat-value">Live</span><span class="card-stat-label">Deployed on Vercel</span></div>
+                                <div class="card-stat"><span class="card-stat-value">Voice-to-Code</span><span class="card-stat-label">Spoken ideas &rarr; working code</span></div>
                                 <div class="card-stat"><span class="card-stat-value">Web Speech API</span><span class="card-stat-label">Real-time voice recognition</span></div>
                                 <div class="card-stat"><span class="card-stat-value">A11y</span><span class="card-stat-label">Accessibility-first design</span></div>
                             </div></div>
@@ -766,11 +719,11 @@
                                     <p class="text-[15px] text-theme-fg">Full-Stack Engineer Intern</p>
                                     <p class="text-sm text-theme-muted">ChannelBlend Technologies &middot; <span class="font-mono text-xs">Apr 2025 — Present</span></p>
                                     <ul class="mt-2 space-y-1 text-sm text-theme-muted">
-                                        <li>Intent-parser core + AI sales-agent persona for WhatsApp (Python/FastAPI)</li>
-                                        <li>LLM evaluation harness — judge rubrics, replay runner, 100+ journey tests</li>
                                         <li>Multi-tenant Elixir/Phoenix platform — product search, Loki ingestion, Lead Reports API</li>
-                                        <li>React/TypeScript operator dashboards + AI-Agent Debug Panel</li>
-                                        <li>Node Shopify ingestion pipeline &amp; Liquid storefront</li>
+                                        <li>LLM evaluation harness — judge rubrics, replay runner, 100+ journey tests</li>
+                                        <li>Keystone tenant-config epic — hardcoded product rules &rarr; config-driven across 3 live tenants; admin access control &amp; guided product tour</li>
+                                        <li>React/TypeScript operator dashboards + AI-Agent Debug Panel — AI-to-staff handover, live polling, real-time AI-reply takeover</li>
+                                        <li>Intent-parser core + AI sales-agent persona for WhatsApp (Python/FastAPI)</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -1030,9 +983,9 @@
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuClose = document.getElementById('menu-close');
-        menuToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+        menuToggle.addEventListener('click', () => { mobileMenu.classList.add('active'); menuToggle.setAttribute('aria-expanded', 'true'); });
         menuClose.addEventListener('click', closeMobileMenu);
-        function closeMobileMenu() { mobileMenu.classList.remove('active'); }
+        function closeMobileMenu() { mobileMenu.classList.remove('active'); menuToggle.setAttribute('aria-expanded', 'false'); }
 
         // ===== SCROLL REVEAL =====
         const fadeObserver = new IntersectionObserver((entries) => {
